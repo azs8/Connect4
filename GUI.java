@@ -1,6 +1,5 @@
 import java.awt.*;
 import javax.swing.*;
-import java.io.*;
 
 class GUI extends JFrame{
   
@@ -9,23 +8,24 @@ class GUI extends JFrame{
   static int pieceRadius = 35;
   static int boardWidth = pieceRadius*7*2;
   static int boardHeight = pieceRadius*6*2;
-  private JLabel infoLabel = new JLabel("Alec is a fuckin bitch");
+  JLabel infoLabel = new JLabel("PAENUS");
+  GameBoard gb;
   
   	//this is a dummy gamestate array for testing the drawing of the board
-  static int[][] array = new int[][]{
-			{1,0,0,0,2,1,0},
-			{2,0,0,0,0,0,0},
-			{1,0,0,0,0,0,0},
-			{2,2,0,0,0,0,0},
-			{1,0,0,0,0,0,0},
-			{2,0,0,0,0,0,0},
+  int[][] array = new int[][]{
+			{0,0,0,1,0,0,0},
+			{0,0,0,1,0,0,0},
+			{0,0,0,1,0,0,0},
+			{0,0,0,1,0,0,0},
+			{0,0,0,1,0,0,0},
+			{0,0,2,1,2,0,0}
 	};
  
   public GUI(){
 	  
 	setSize(width, height);
 	
-    GameBoard gb = new GameBoard();
+    gb = new GameBoard(array); //create gameboard and pass it the initial array (the empty game)
     gb.setSize(boardWidth, boardHeight);
     
     //button stuff
@@ -65,15 +65,21 @@ class GUI extends JFrame{
   
 }
 
+/* A subclass of JPanel which displays the gameboard with pieces */
 class GameBoard extends JPanel{
+	
+	int[][] array;
+	
+	public GameBoard(int[][] array){
+		this.array = array;
+	}
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		this.setBackground(Color.WHITE);
 		
-		//drawing game board???
+		//draw game board
 		g.setColor(Color.BLACK);
-		
 		g.drawLine(70, 0, 70, GUI.boardHeight);
 		g.drawLine(140, 0, 140, GUI.boardHeight);
 		g.drawLine(210, 0, 210, GUI.boardHeight);
@@ -81,7 +87,7 @@ class GameBoard extends JPanel{
 		g.drawLine(350, 0, 350, GUI.boardHeight);
 		g.drawLine(420, 0, 420, GUI.boardHeight);
 		
-		paintPieces(g, GUI.array);
+		paintPieces(g, array);
 	}
 	
 	//paint the pieces placed so far in the game, player1 = green, AI = red
@@ -108,5 +114,4 @@ class GameBoard extends JPanel{
 			}
 		}
 	}
-
 }
