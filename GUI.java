@@ -1,31 +1,37 @@
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 class GUI extends JFrame{
   
-  int width = 498;
-  int height = 490;
+  static int width = 498;
+  static int height = 490;
   static int pieceRadius = 35;
   static int boardWidth = pieceRadius*7*2;
   static int boardHeight = pieceRadius*6*2;
   JLabel infoLabel = new JLabel("PAENUS");
   GameBoard gb;
   
-  	//this is a dummy gamestate array for testing the drawing of the board
-  int[][] array = new int[][]{
-			{0,0,0,1,0,0,0},
-			{0,0,0,1,0,0,0},
-			{0,0,0,1,0,0,0},
-			{0,0,0,1,0,0,0},
-			{0,0,0,1,0,0,0},
-			{0,0,2,1,2,0,0}
-	};
  
   public GUI(){
 	  
+	//make dummy gamestate
+	  ArrayList<ArrayList<Integer>> boardTestGUI = new ArrayList<ArrayList<Integer>>();
+	  
+	  for (int i = 0; i < 7; i ++) {
+			ArrayList<Integer> rowI = new ArrayList<Integer>();
+			for (int j = 0; j < 6; j ++) {
+				rowI.add(0);
+			}
+			boardTestGUI.add(rowI);
+		}
+	  //for dummy gamestate, add these pieces -> get(column).set(row, player)
+	  boardTestGUI.get(0).set(0,1);
+	  
 	setSize(width, height);
 	
-    gb = new GameBoard(array); //create gameboard and pass it the initial array (the empty game)
+    gb = new GameBoard(boardTestGUI); //create gameboard and pass it the initial array (the empty game)
     gb.setSize(boardWidth, boardHeight);
     
     //button stuff
@@ -45,7 +51,7 @@ class GUI extends JFrame{
     buttonsPanel.add(button5);
     buttonsPanel.add(button6);
     
-    //layout stuff
+    //layout stuff, add components
     setLayout(new BorderLayout());
     add(infoLabel, BorderLayout.NORTH);
     add(gb, BorderLayout.CENTER);
@@ -61,6 +67,9 @@ class GUI extends JFrame{
   
   public static void main(String[] args){
     GUI gui = new GUI();
+    
+    String[] argsMainGame = {"-h"};
+    MainGame.main(argsMainGame);
   }
   
 }
@@ -68,43 +77,42 @@ class GUI extends JFrame{
 /* A subclass of JPanel which displays the gameboard with pieces */
 class GameBoard extends JPanel{
 	
-	int[][] array;
+	ArrayList<ArrayList<Integer>> arrayList;
 	
-	public GameBoard(int[][] array){
-		this.array = array;
+	public GameBoard(ArrayList<ArrayList<Integer>> arrayList){
+		this.arrayList = arrayList;
 	}
 	
+	//paint the gameboard
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		this.setBackground(Color.WHITE);
+		this.setBackground(Color.YELLOW);
 		
-		//draw game board
-		g.setColor(Color.BLACK);
-		g.drawLine(70, 0, 70, GUI.boardHeight);
-		g.drawLine(140, 0, 140, GUI.boardHeight);
-		g.drawLine(210, 0, 210, GUI.boardHeight);
-		g.drawLine(280, 0, 280, GUI.boardHeight);
-		g.drawLine(350, 0, 350, GUI.boardHeight);
-		g.drawLine(420, 0, 420, GUI.boardHeight);
-		
-		paintPieces(g, array);
+		paintPieces(g, arrayList);
 	}
 	
 	//paint the pieces placed so far in the game, player1 = green, AI = red
-	public void paintPieces(Graphics g, int[][] array){
+	public void paintPieces(Graphics g, ArrayList<ArrayList<Integer>> arrayList){
 		super.paintComponents(g);
 		
 		for (int i= 0; i <= 5; i++){
-			for (int j = 0; j <=6; j++){
+			for (int j = 0; j <= 6; j++){
 				
-				if (array[i][j] == 1){
+				if(arrayList.get(j).get(i) == 0){
+					g.setColor(Color.WHITE);
+					g.fillOval(GUI.pieceRadius*2*j,
+							GUI.pieceRadius*2*i,
+							GUI.pieceRadius*2,
+							GUI.pieceRadius*2);
+					
+				} else if (arrayList.get(j).get(i) == 1){
 					g.setColor(Color.GREEN);
 					g.fillOval(GUI.pieceRadius*2*j,
 							GUI.pieceRadius*2*i,
 							GUI.pieceRadius*2,
 							GUI.pieceRadius*2);
 					
-				} else if (array[i][j] == 2){
+				} else if (arrayList.get(j).get(i) == 2){
 					g.setColor(Color.RED);
 					g.fillOval(GUI.pieceRadius*2*j,
 							GUI.pieceRadius*2*i,
