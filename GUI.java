@@ -1,9 +1,10 @@
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-
 import javax.swing.*;
 
-class GUI extends JFrame{
+class GUI extends JFrame implements ActionListener{
   
   static int width = 498;
   static int height = 490;
@@ -11,7 +12,18 @@ class GUI extends JFrame{
   static int boardWidth = pieceRadius*7*2;
   static int boardHeight = pieceRadius*6*2;
   JLabel infoLabel = new JLabel("PAENUS");
+  
+  //instance of GameBoard which extends JPanel
   GameBoard gb;
+  
+  //button declarations so that actionPerformed can access them
+  JButton button0;
+  JButton button1;
+  JButton button2;
+  JButton button3;
+  JButton button4;
+  JButton button5;
+  JButton button6;
   
  
   public GUI(){
@@ -36,13 +48,13 @@ class GUI extends JFrame{
     
     //button stuff
     JPanel buttonsPanel = new JPanel(new GridLayout(1,6,0,0));
-    JButton button0 = new JButton(" ");
-    JButton button1 = new JButton(" ");
-    JButton button2 = new JButton(" ");
-    JButton button3 = new JButton(" ");
-    JButton button4 = new JButton(" ");
-    JButton button5 = new JButton(" ");
-    JButton button6 = new JButton(" ");
+    button0 = new JButton(" ");
+    button1 = new JButton(" ");
+    button2 = new JButton(" ");
+    button3 = new JButton(" ");
+    button4 = new JButton(" ");
+    button5 = new JButton(" ");
+    button6 = new JButton(" ");
     buttonsPanel.add(button0);
     buttonsPanel.add(button1);
     buttonsPanel.add(button2);
@@ -50,6 +62,13 @@ class GUI extends JFrame{
     buttonsPanel.add(button4);
     buttonsPanel.add(button5);
     buttonsPanel.add(button6);
+    button0.addActionListener(this);
+    button1.addActionListener(this);
+    button2.addActionListener(this);
+    button3.addActionListener(this);
+    button4.addActionListener(this);
+    button5.addActionListener(this);
+    button6.addActionListener(this);
     
     //layout stuff, add components
     setLayout(new BorderLayout());
@@ -57,7 +76,7 @@ class GUI extends JFrame{
     add(gb, BorderLayout.CENTER);
     add(buttonsPanel, BorderLayout.SOUTH);
     
-    //misc
+    //misc JFrame stuff
     setTitle("Connect Four");
     setSize(width, height);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,6 +91,24 @@ class GUI extends JFrame{
     MainGame.main(argsMainGame);
   }
   
+  public void actionPerformed(ActionEvent e){
+	  Object src = e.getSource();
+	  if (src == button0){
+		  //make human move in column 0
+	  } else if (src == button1){
+		  //make human move in column 1
+	  } else if (src == button2){
+		  //make human move in column 2
+	  } else if (src == button3){
+		  //make human move in column 3
+	  } else if (src == button4){
+		  //make human move in column 4
+	  } else if (src == button5){
+		  //make human move in column 5
+	  } else if (src == button6){
+		  //make human move in column 6
+	  }
+  }
 }
 
 /* A subclass of JPanel which displays the gameboard with pieces */
